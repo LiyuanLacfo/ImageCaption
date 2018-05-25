@@ -12,7 +12,7 @@ class Vocabulary(object):
         start_word="<start>",
         end_word="<end>",
         unk_word="<unk>",
-        annotations_file='../cocoapi/annotations/captions_train2014.json',
+        annotations_file='../COCO/annotations/captions_train2014.json',
         vocab_from_file=False):
         """Initialize the vocabulary.
         Args:
@@ -38,6 +38,7 @@ class Vocabulary(object):
         """Load the vocabulary from file OR build the vocabulary from scratch."""
         if os.path.exists(self.vocab_file) & self.vocab_from_file:
             with open(self.vocab_file, 'rb') as f:
+                #that is the most important in vocabulary is the word2idx and idx2word dictionaries
                 vocab = pickle.load(f)
                 self.word2idx = vocab.word2idx
                 self.idx2word = vocab.idx2word

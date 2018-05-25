@@ -20,7 +20,7 @@ def get_loader(transform,
                unk_word="<unk>",
                vocab_from_file=True,
                num_workers=0,
-               cocoapi_loc='/opt'):
+               cocoapi_loc='/Users/lacfo'):
     """Returns the data loader.
     Args:
       transform: Image transform.
@@ -43,14 +43,14 @@ def get_loader(transform,
     # Based on mode (train, val, test), obtain img_folder and annotations_file.
     if mode == 'train':
         if vocab_from_file==True: assert os.path.exists(vocab_file), "vocab_file does not exist.  Change vocab_from_file to False to create vocab_file."
-        img_folder = os.path.join(cocoapi_loc, 'cocoapi/images/train2014/')
-        annotations_file = os.path.join(cocoapi_loc, 'cocoapi/annotations/captions_train2014.json')
+        img_folder = os.path.join(cocoapi_loc, 'COCO/train2014/')
+        annotations_file = os.path.join(cocoapi_loc, 'COCO/annotations/captions_train2014.json')
     if mode == 'test':
         assert batch_size==1, "Please change batch_size to 1 if testing your model."
         assert os.path.exists(vocab_file), "Must first generate vocab.pkl from training data."
         assert vocab_from_file==True, "Change vocab_from_file to True."
-        img_folder = os.path.join(cocoapi_loc, 'cocoapi/images/test2014/')
-        annotations_file = os.path.join(cocoapi_loc, 'cocoapi/annotations/image_info_test2014.json')
+        img_folder = os.path.join(cocoapi_loc, 'COCO/test2014/')
+        annotations_file = os.path.join(cocoapi_loc, 'COCO/annotations/image_info_test2014.json')
 
     # COCO caption dataset.
     dataset = CoCoDataset(transform=transform,
@@ -119,6 +119,7 @@ class CoCoDataset(data.Dataset):
             # Convert caption to tensor of word ids.
             tokens = nltk.tokenize.word_tokenize(str(caption).lower())
             caption = []
+            #here each element is the index corresponding to the token
             caption.append(self.vocab(self.vocab.start_word))
             caption.extend([self.vocab(token) for token in tokens])
             caption.append(self.vocab(self.vocab.end_word))
